@@ -1,31 +1,23 @@
 import React, { useState } from 'react';
+import { Mail, Package, Truck, CheckCircle } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
   // États pour la progression et l'étape actuelle
   const [projectProgress, setProjectProgress] = useState<number>(17); // Progression initiale à 17%
   const [currentStep, setCurrentStep] = useState<number>(1); // Étape initiale : 1 (Demande envoyée)
 
+  const steps = [
+    { id: 1, name: 'Demande envoyée', progress: 20, icon: <Mail size={20} /> },
+    { id: 2, name: 'En cours de confection', progress: 20, icon: <Package size={20} /> },
+    { id: 3, name: 'En cours de livraison', progress: 20, icon: <Truck size={20} /> },
+    { id: 4, name: 'Projet livré', progress: 20, icon: <CheckCircle size={20} /> },
+  ];
+
   // Fonction pour passer à l'étape suivante
   const goToNextStep = () => {
-    if (currentStep < 4) {
+    if (currentStep < steps.length) {
       setCurrentStep(currentStep + 1);
-      // Mettre à jour la progression en fonction de l'étape
-      switch (currentStep + 1) {
-        case 1:
-          setProjectProgress(17);
-          break;
-        case 2:
-          setProjectProgress(50);
-          break;
-        case 3:
-          setProjectProgress(83);
-          break;
-        case 4:
-          setProjectProgress(100);
-          break;
-        default:
-          setProjectProgress(17);
-      }
+      setProjectProgress(steps[currentStep].progress);
     }
   };
 
@@ -33,45 +25,34 @@ const Dashboard: React.FC = () => {
   const goToPreviousStep = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
-      // Mettre à jour la progression en fonction de l'étape
-      switch (currentStep - 1) {
-        case 1:
-          setProjectProgress(17);
-          break;
-        case 2:
-          setProjectProgress(50);
-          break;
-        case 3:
-          setProjectProgress(83);
-          break;
-        case 4:
-          setProjectProgress(100);
-          break;
-        default:
-          setProjectProgress(17);
-      }
+      setProjectProgress(steps[currentStep - 2].progress);
     }
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-4 md:p-8">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800">Mon Projet</h1>
       </div>
 
-      {/* Barre de progression */}
-      <div className="w-full bg-gray-200 rounded-full h-4 relative">
-        <div
-          className="bg-gradient-to-r from-orange-500 to-black text-white h-4 rounded-full"
-          style={{ width: `${projectProgress}%` }}
-        ></div>
-
-        {/* Étiquettes des étapes */}
-        <div className="flex justify-between mt-2">
-          <span className="text-sm text-gray-600">Demande envoyée</span>
-          <span className="text-sm text-gray-600">En cours de confection</span>
-          <span className="text-sm text-gray-600">En cours de livraison</span>
-          <span className="text-sm text-gray-600">Projet livré</span>
+      {/* Progress Stepper */}
+      <div className="w-full">
+        <div className="flex justify-between items-center">
+          {steps.map((step, index) => (
+            <div key={step.id} className="flex-1">
+              <div className={`relative mb-2 ${index < steps.length - 1 ? 'pr-4' : ''}`}>
+                <div className="flex items-center">
+                  <div className={`flex items-center justify-center w-10 h-10 rounded-full ${currentStep >= step.id ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-500'}`}>
+                    {step.icon}
+                  </div>
+                  {index < steps.length - 1 && (
+                    <div className={`flex-1 h-1 ${currentStep > step.id ? 'bg-orange-500' : 'bg-gray-200'}`}></div>
+                  )}
+                </div>
+              </div>
+              <div className=" text-sm text-gray-600">{step.name}</div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -80,13 +61,13 @@ const Dashboard: React.FC = () => {
         <button
           onClick={goToPreviousStep}
           disabled={currentStep === 1}
-          className="ppx-4 py-2 bg-gradient-to-l from-orange-500 to-black text-white rounded-lg disabled:opacity-50"
+          className="px-4 py-2 bg-gradient-to-l from-orange-500 to-black text-white rounded-lg disabled:opacity-50"
         >
           Étape précédente
         </button>
         <button
           onClick={goToNextStep}
-          disabled={currentStep === 4}
+          disabled={currentStep === steps.length}
           className="px-4 py-2 bg-gradient-to-r from-orange-500 to-black text-white rounded-lg disabled:opacity-50"
         >
           Étape suivante
@@ -96,7 +77,7 @@ const Dashboard: React.FC = () => {
       {/* Affichage de l'étape actuelle */}
       <div className="mt-6 text-center">
         <p className="text-lg font-semibold text-gray-800">
-          Étape actuelle : {currentStep}
+          Étape actuelle : {steps[currentStep - 1].name}
         </p>
       </div>
     </div>
