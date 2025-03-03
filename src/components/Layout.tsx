@@ -51,7 +51,33 @@ const Layout: React.FC = () => {
                   }`}
                 >
                   <FileText size={20} />
-                  <span>Invoices</span>
+                  <span>Mon projet</span>
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/documents" 
+                  className={`flex items-center space-x-2 p-3 rounded-lg transition-colors ${
+                    location.pathname === '/documents' 
+                      ? 'bg-gradient-to-r from-orange-500 to-black text-white' 
+                      : 'hover:bg-gray-100'
+                  }`}
+                >
+                  <FileText size={20} />
+                  <span>Documents</span>
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/facture" 
+                  className={`flex items-center space-x-2 p-3 rounded-lg transition-colors ${
+                    location.pathname === '/facture' 
+                      ? 'bg-gradient-to-r from-orange-500 to-black text-white' 
+                      : 'hover:bg-gray-100'
+                  }`}
+                >
+                  <FileText size={20} />
+                  <span>Facture</span>
                 </Link>
               </li>
               <li>

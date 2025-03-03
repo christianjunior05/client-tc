@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
+import Documents from './pages/Documents';
+import Facture from './pages/Facture';
 import Catalog from './pages/Catalog';
 import Layout from './components/Layout';
 import Login from './pages/Login';
@@ -31,6 +33,8 @@ function App() {
               </ProtectedRoute>
             }>
               <Route index element={<Dashboard />} />
+              <Route path="documents" element={<Documents />} />
+              <Route path="facture" element={<Facture />} />
               <Route path="catalog" element={<Catalog />} />
             </Route>
           </Routes>
