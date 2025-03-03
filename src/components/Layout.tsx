@@ -50,7 +50,9 @@ const Layout: React.FC = () => {
       {/* Sidebar and Main Content */}
       <div className="flex flex-1">
         {/* Sidebar */}
-        <aside className={`fixed inset-y-0 left-0 w-64 bg-white shadow-md transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform custom:relative custom:translate-x-0 z-50`}>
+        <aside className={`fixed inset-y-0 left-0 w-64 bg-white shadow-md transform ${
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } transition-transform custom:translate-x-0 custom:relative z-50`}>
           <nav className="p-4">
             <ul className="space-y-2">
               <li>
