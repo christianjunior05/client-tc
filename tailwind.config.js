@@ -2,7 +2,12 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'custom': '1111px', // Ajout du point de rupture personnalisé
+      },
+    },
   },
+  variants: {},
   plugins: [],
 };

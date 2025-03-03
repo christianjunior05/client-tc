@@ -1,20 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { FileText, ShoppingCart, LogOut } from 'lucide-react';
+import { FileText, ShoppingCart, LogOut, Menu } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Layout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
-  
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
-  
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-orange-50 to-gray-100">
+    <div className="z-50 min-h-screen flex flex-col bg-gradient-to-br from-orange-50 to-gray-100">
       {/* Header */}
       <header className="bg-gradient-to-r from-orange-500 to-black text-white shadow-md">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -31,6 +36,13 @@ const Layout: React.FC = () => {
             >
               <LogOut size={20} />
             </button>
+            <button 
+              onClick={toggleSidebar}
+              className="p-2 rounded-full hover:bg-white/10 transition-colors custom:hidden"
+              aria-label="Menu"
+            >
+              <Menu size={20} />
+            </button>
           </div>
         </div>
       </header>
@@ -38,7 +50,7 @@ const Layout: React.FC = () => {
       {/* Sidebar and Main Content */}
       <div className="flex flex-1">
         {/* Sidebar */}
-        <aside className="w-64 bg-white shadow-md">
+        <aside className={`fixed inset-y-0 left-0 w-64 bg-white shadow-md transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform custom:relative custom:translate-x-0 z-50`}>
           <nav className="p-4">
             <ul className="space-y-2">
               <li>
@@ -98,7 +110,7 @@ const Layout: React.FC = () => {
         </aside>
         
         {/* Main Content */}
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-6 custom:ml-0">
           <Outlet />
         </main>
       </div>
