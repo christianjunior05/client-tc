@@ -7,11 +7,11 @@ const Dashboard: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(1); // Étape initiale : 1 (Demande envoyée)
 
   const steps = [
-    { id: 1, name: 'Demande envoyée', progress: 20, icon: <Mail size={20} /> },
-    { id: 2, name: 'En cours de confection', progress: 40, icon: <Package size={20} /> },
-    { id: 3, name: '3D', progress: 60, icon: <Box size={20} /> }, // Nouvelle étape "3D"
-    { id: 4, name: 'En cours de livraison', progress: 80, icon: <Truck size={20} /> },
-    { id: 5, name: 'Projet livré', progress: 100, icon: <CheckCircle size={20} /> },
+    { id: 1, name: 'Demande envoyée', progress: 20, icon: <Mail size={20} />, image: <Mail size={200} /> },
+    { id: 2, name: 'En cours de confection', progress: 40, icon: <Package size={20} />, image: <Package size={200} /> },
+    { id: 3, name: '3D', progress: 60, icon: <Box size={20} />, image: <Box size={200} /> }, // Nouvelle étape "3D"
+    { id: 4, name: 'En cours de livraison', progress: 80, icon: <Truck size={20} />, image: <Truck size={200} /> },
+    { id: 5, name: 'Projet livré', progress: 100, icon: <CheckCircle size={20} />, image: <CheckCircle size={200} />},
   ];
 
   // Fonction pour passer à l'étape suivante
@@ -51,7 +51,7 @@ const Dashboard: React.FC = () => {
                   )}
                 </div>
               </div>
-              <div className="text-sm text-gray-600">{step.name}</div>
+              <div className="text-sm text-gray-600 text-center">{step.name}</div>
             </div>
           ))}
         </div>
@@ -80,6 +80,15 @@ const Dashboard: React.FC = () => {
         <p className="text-lg font-semibold text-gray-800">
           Étape actuelle : {steps[currentStep - 1].name}
         </p>
+      </div>
+
+      {/* Affichage de l'icône de l'étape actuelle */}
+      <div className="mt-6 text-center">
+        <div className="flex justify-center">
+          <div className="w-200 h-200 flex items-center justify-center bg-orange-100 rounded-full">
+            {steps[currentStep - 1].image}
+          </div>
+        </div>
       </div>
     </div>
   );

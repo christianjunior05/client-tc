@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { Download, Search, Filter } from 'lucide-react';
+import { Download, Search, Filter, Eye } from 'lucide-react';
 import { invoices } from '../data/mockData';
 import { Invoice } from '../types';
 import { generateInvoicePDF } from '../utils/pdfGenerator';
+import { Worker, Viewer } from '@react-pdf-viewer/core';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
 const Documents: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
 
   // Filter invoices based on search term and status
   const filteredInvoices = invoices.filter((invoice) => {
@@ -20,7 +24,15 @@ const Documents: React.FC = () => {
   });
 
   const handleDownload = (invoice: Invoice) => {
-    generateInvoicePDF(invoice);
+    const pdfUrl = generateInvoicePDF(invoice);
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = `invoice_${invoice.invoiceNumber}.pdf`;
+    link.click();
+  };
+
+  const handleView = (invoice: Invoice) => {
+    setSelectedInvoice(invoice);
   };
 
   const getStatusColor = (status: string) => {
@@ -129,11 +141,18 @@ const Documents: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button
+                      onClick={() => handleView(invoice)}
+                      className="text-orange-600 hover:text-orange-900 flex items-center justify-end space-x-1"
+                    >
+                      <Eye size={16} />
+                      <span className="hidden sm:inline">Voir</span>
+                    </button>
+                    <button
                       onClick={() => handleDownload(invoice)}
                       className="text-orange-600 hover:text-orange-900 flex items-center justify-end space-x-1"
                     >
                       <Download size={16} />
-                      <span className="hidden sm:inline">Download</span>
+                      <span className="hidden sm:inline">Télécharger</span>
                     </button>
                   </td>
                 </tr>
@@ -150,6 +169,31 @@ const Documents: React.FC = () => {
           </table>
         </div>
       </div>
+
+      {/* PDF Viewer Modal */}
+      {selectedInvoice && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          onClick={() => setSelectedInvoice(null)}
+        >
+          <div
+            className="bg-white rounded-lg shadow-lg p-4 max-w-3xl w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Visualisation: {selectedInvoice.invoiceNumber}</h2>
+              <button onClick={() => setSelectedInvoice(null)} className="text-gray-500 hover:text-gray-700">
+                Fermer
+              </button>
+            </div>
+            <div className="overflow-auto" style={{ height: '500px' }}>
+            <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
+              <Viewer fileUrl={generateInvoicePDF(selectedInvoice)} />
+            </Worker>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

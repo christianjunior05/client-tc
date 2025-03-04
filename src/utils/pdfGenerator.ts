@@ -9,7 +9,7 @@ declare module 'jspdf' {
   }
 }
 
-export const generateInvoicePDF = (invoice: Invoice) => {
+export const generateInvoicePDF = (invoice: Invoice): string => {
   const doc = new jsPDF();
   
   // Add company logo/header
@@ -74,6 +74,6 @@ export const generateInvoicePDF = (invoice: Invoice) => {
     doc.text('Thank you for your business!', 105, 285, { align: 'center' });
   }
   
-  // Save the PDF
-  doc.save(`${invoice.invoiceNumber}.pdf`);
+  // Retourner l'URL du PDF généré
+  return doc.output('bloburl');
 };
