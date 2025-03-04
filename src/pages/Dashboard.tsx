@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Package, Truck, CheckCircle } from 'lucide-react';
+import { Mail, Package, Truck, CheckCircle, Box } from 'lucide-react'; // Ajout de l'icône Box
 
 const Dashboard: React.FC = () => {
   // États pour la progression et l'étape actuelle
@@ -8,9 +8,10 @@ const Dashboard: React.FC = () => {
 
   const steps = [
     { id: 1, name: 'Demande envoyée', progress: 20, icon: <Mail size={20} /> },
-    { id: 2, name: 'En cours de confection', progress: 20, icon: <Package size={20} /> },
-    { id: 3, name: 'En cours de livraison', progress: 20, icon: <Truck size={20} /> },
-    { id: 4, name: 'Projet livré', progress: 20, icon: <CheckCircle size={20} /> },
+    { id: 2, name: 'En cours de confection', progress: 40, icon: <Package size={20} /> },
+    { id: 3, name: '3D', progress: 60, icon: <Box size={20} /> }, // Nouvelle étape "3D"
+    { id: 4, name: 'En cours de livraison', progress: 80, icon: <Truck size={20} /> },
+    { id: 5, name: 'Projet livré', progress: 100, icon: <CheckCircle size={20} /> },
   ];
 
   // Fonction pour passer à l'étape suivante
@@ -50,7 +51,7 @@ const Dashboard: React.FC = () => {
                   )}
                 </div>
               </div>
-              <div className=" text-sm text-gray-600">{step.name}</div>
+              <div className="text-sm text-gray-600">{step.name}</div>
             </div>
           ))}
         </div>
